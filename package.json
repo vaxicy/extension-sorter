@@ -65,7 +65,14 @@
           "id": "extensionSorter.installedByDate",
           "name": "Installed by Date",
           "icon": "resources/sorter.svg",
-          "contextualTitle": "Extension Sorter"
+          "when": "extensionSorter.viewStyle != rich"
+        },
+        {
+          "id": "extensionSorter.richList",
+          "name": "Installed by Date",
+          "icon": "resources/sorter.svg",
+          "type": "webview",
+          "when": "extensionSorter.viewStyle == rich"
         }
       ]
     },
@@ -129,22 +136,22 @@
       "view/title": [
         {
           "command": "extensionSorter.sort",
-          "when": "view == extensionSorter.installedByDate",
+          "when": "view =~ /^extensionSorter\\.(installedByDate|richList)$/",
           "group": "navigation@1"
         },
         {
           "command": "extensionSorter.filter",
-          "when": "view == extensionSorter.installedByDate",
+          "when": "view =~ /^extensionSorter\\.(installedByDate|richList)$/",
           "group": "navigation@2"
         },
         {
           "command": "extensionSorter.search",
-          "when": "view == extensionSorter.installedByDate",
+          "when": "view =~ /^extensionSorter\\.(installedByDate|richList)$/",
           "group": "navigation@3"
         },
         {
           "command": "extensionSorter.refresh",
-          "when": "view == extensionSorter.installedByDate",
+          "when": "view =~ /^extensionSorter\\.(installedByDate|richList)$/",
           "group": "navigation@4"
         }
       ],
@@ -187,6 +194,34 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "Show VS Code built-in extensions (the ones shipped inside the VS Code installation) in the **Installed by Date** view."
+        },
+        "extensionSorter.viewStyle": {
+          "type": "string",
+          "enum": [
+            "rich",
+            "compact"
+          ],
+          "enumDescriptions": [
+            "Rich list: two lines per row, 32px icons, month headings, in-view search box",
+            "Compact tree: one line per row, drawn by VS Code itself"
+          ],
+          "default": "rich",
+          "markdownDescription": "How the **Installed by Date** view is drawn. The rich list follows the look of the built-in Installed extensions list; the compact tree keeps the plain native rows."
+        },
+        "extensionSorter.groupBy": {
+          "type": "string",
+          "enum": [
+            "month",
+            "year",
+            "none"
+          ],
+          "enumDescriptions": [
+            "One heading per month (October 2026)",
+            "One heading per year (2026)",
+            "One flat list, no headings"
+          ],
+          "default": "month",
+          "markdownDescription": "Grouping of the rich list. Only the date sort orders (**Newest Installed First** / **Oldest Installed First**) group; the name orders always stay flat."
         },
         "extensionSorter.defaultSortOrder": {
           "type": "string",

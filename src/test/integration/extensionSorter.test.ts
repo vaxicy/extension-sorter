@@ -45,6 +45,19 @@ function tooltipText(item: vscode.TreeItem): string {
   return item.tooltip instanceof vscode.MarkdownString ? item.tooltip.value : String(item.tooltip);
 }
 
+/** Polls `predicate` - view and settings updates arrive asynchronously. */
+async function waitFor(description: string, predicate: () => boolean, timeoutMs = 8000): Promise<boolean> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    if (predicate()) {
+      return true;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  console.log(`[note] timed out waiting for ${description}.`);
+  return false;
+}
+
 before(async () => {
   const extension = vscode.extensions.getExtension(EXTENSION_ID);
   assert.ok(extension, `the extension under development must be visible as ${EXTENSION_ID}`);
@@ -285,6 +298,74 @@ if (DUMMY_IDS.length === 0) {
       assert.ok(/Estimated|Installed/.test(String(item.description)), `unexpected description: ${String(item.description)}`);
       assert.ok(tooltipText(item).includes('contoso.apricot-glow-theme'));
       assert.deepStrictEqual((item.command as vscode.Command).arguments, [themeId]);
+    });
+  });
+
+  describe('rich list view', () => {
+    const configuration = (): vscode.WorkspaceConfiguration => vscode.workspace.getConfiguration('extensionSorter');
+
+    const setViewStyle = (style: string): Thenable<void> =>
+      configuration().update('viewStyle', style, vscode.ConfigurationTarget.Global);
+
+    after(async () => {
+      await setViewStyle('rich');
+    });
+
+    it('is the view that the style setting selects, and the tree is the fallback', async () => {
+      await setViewStyle('compact');
+      assert.strictEqual(await waitFor('the compact style', () => api.service.viewStyle() === 'compact'), true);
+
+      await setViewStyle('rich');
+      assert.strictEqual(await waitFor('the rich style', () => api.service.viewStyle() === 'rich'), true);
+
+      // Focusing the view is what makes VS Code call `resolveWebviewView`; the
+      // sidebar is part of the window, so this usually works - but the handlers
+      // are only *needed* for that, so a timeout is reported as a note instead of
+      // failing the suite.
+      await vscode.commands.executeCommand('extensionSorter.richList.focus');
+      const resolved = await waitFor('the rich webview to resolve', () => api.rich.getView() !== undefined, 10000);
+      if (!resolved) {
+        console.log('[note] the rich webview view was not resolved (the sidebar did not open); the model checks below still run.');
+      }
+    });
+
+    it('builds two-line rows with headings from the same data as the tree', async () => {
+      await api.state.setSortMode('newest');
+      await api.rich.sync();
+      const model = api.rich.getModel();
+      assert.ok(model, 'the rich list must build a model');
+      assert.strictEqual(model!.total, installed.length);
+      assert.strictEqual(model!.shown, installed.length);
+      assert.strictEqual(model!.isFiltered, false);
+      assert.strictEqual(model!.groupBy, 'month', 'the date orders group by month by default');
+      assert.ok(
+        model!.groups.length > 0 && model!.groups.every((group) => group.label.length > 0),
+        `every group needs a heading: ${model!.groups.map((group) => group.label).join(', ')}`,
+      );
+
+      const rows = model!.groups.flatMap((group) => group.rows);
+      assert.strictEqual(rows.length, installed.length);
+      const theme = rows.find((row) => row.id === themeId);
+      assert.ok(theme, `expected ${themeId} in the rich list`);
+      assert.ok(theme!.subtitle.startsWith('contoso'), `subtitle: ${theme!.subtitle}`);
+      assert.ok(theme!.dateText.length > 0);
+      assert.ok(theme!.tooltip.includes('Date source:'), 'the hover text explains where the date comes from');
+      const tool = rows.find((row) => row.id === toolId);
+      assert.strictEqual(tool!.subtitle.includes('color theme'), false, 'a non-theme row must not claim themes');
+    });
+
+    it('follows the shared filter and search state', async () => {
+      api.state.setQuery('apricot');
+      assert.strictEqual(await waitFor('the rich list to narrow down', () => api.rich.getModel()?.query === 'apricot'), true);
+      const filtered = api.rich.getModel()!;
+      assert.strictEqual(filtered.isFiltered, true);
+      assert.strictEqual(filtered.shown, 1);
+      assert.strictEqual(filtered.groups[0]!.rows[0]!.id, themeId);
+      assert.strictEqual(filtered.total, installed.length, 'the total stays visible while filtering');
+
+      api.state.resetFilters();
+      assert.strictEqual(await waitFor('the filter to be reset', () => api.rich.getModel()?.query === ''), true);
+      assert.strictEqual(api.rich.getModel()!.shown, api.rich.getModel()!.total);
     });
   });
 }

@@ -85,6 +85,19 @@ export class ExtensionTreeProvider implements vscode.TreeDataProvider<SorterExte
     await this.reload(hard);
   }
 
+  /**
+   * Everything the service reads, unfiltered and unsorted.
+   *
+   * The rich list view borrows this so the file system is read exactly once,
+   * no matter which of the two views is visible.
+   */
+  async getAll(): Promise<SorterExtension[]> {
+    if (!this.loaded) {
+      await this.reload(true);
+    }
+    return this.all;
+  }
+
   async getChildren(element?: SorterExtension): Promise<SorterExtension[]> {
     if (element) {
       return []; // flat list, no nesting

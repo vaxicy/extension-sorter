@@ -3,6 +3,7 @@ import { registerExtensionCommands } from './commands/extensionCommands';
 import { registerViewCommands } from './commands/sortCommands';
 import { SorterExtension } from './models/extensionInfo';
 import { ExtensionTreeProvider, VIEW_ID } from './providers/extensionTreeProvider';
+import { RICH_LIST_VIEW_ID, RichListViewProvider } from './providers/richListViewProvider';
 import { CONFIGURATION_SECTION, ExtensionService } from './services/extensionService';
 import { InstallDateService, OBSERVED_INSTALL_WINDOW_MS } from './services/installDateService';
 import { InstallHistoryService } from './services/installHistoryService';
@@ -21,6 +22,12 @@ import { ViewStateService } from './services/viewStateService';
 const CHANGE_DEBOUNCE_MS = 400;
 
 /**
+ * Context key that decides which of the two views is contributed to the
+ * activity bar (see the `when` clauses in `package.json`).
+ */
+const VIEW_STYLE_CONTEXT_KEY = 'extensionSorter.viewStyle';
+
+/**
  * Handles returned by `activate()`.
  *
  * The extension itself does not need them, but they let the integration tests
@@ -32,6 +39,7 @@ export interface ExtensionSorterApi {
   readonly log: vscode.LogOutputChannel;
   readonly provider: ExtensionTreeProvider;
   readonly treeView: vscode.TreeView<SorterExtension>;
+  readonly rich: RichListViewProvider;
   readonly service: ExtensionService;
   readonly dates: InstallDateService;
   readonly history: InstallHistoryService;
@@ -60,6 +68,27 @@ export async function activate(context: vscode.ExtensionContext): Promise<Extens
   });
   context.subscriptions.push(treeView);
 
+  // The rich list is a webview; `retainContextWhenHidden` keeps its DOM (scroll
+  // position, search box) alive while the user looks at something else.
+  const richProvider = new RichListViewProvider({
+    provider,
+    state: viewState,
+    log,
+    extensionRoot: context.extensionUri,
+    groupBy: () => extensionService.groupBy(),
+  });
+  context.subscriptions.push(richProvider);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(RICH_LIST_VIEW_ID, richProvider, {
+      webviewOptions: { retainContextWhenHidden: true },
+    }),
+  );
+
+  // Which view is contributed has to be known before the first view is drawn.
+  const applyViewStyleContext = (): Thenable<unknown> =>
+    vscode.commands.executeCommand('setContext', VIEW_STYLE_CONTEXT_KEY, extensionService.viewStyle());
+  void applyViewStyleContext();
+
   const updateViewChrome = (): void => {
     const snapshot = provider.getSnapshot();
     if (snapshot.total === 0) {
@@ -69,9 +98,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<Extens
     } else {
       treeView.description = `${snapshot.total} extension${snapshot.total === 1 ? '' : 's'} · ${snapshot.sortLabel}`;
     }
-    treeView.message = snapshot.isFiltered
-      ? `Showing ${snapshot.visible} of ${snapshot.total} extensions (${snapshot.filterLabel}). Run "Extension Sorter: Reset Filters and Search" to show everything.`
-      : undefined;
+    // One short line on purpose: the message eats vertical space in a narrow
+    // sidebar, and the empty view offers "Reset Filters and Search" as a link.
+    treeView.message = snapshot.isFiltered ? `${snapshot.visible} of ${snapshot.total} shown · ${snapshot.filterLabel}` : undefined;
   };
   context.subscriptions.push(provider.onDidChangeTreeData(updateViewChrome));
 
@@ -82,6 +111,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<Extens
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration(CONFIGURATION_SECTION)) {
         log.info('Configuration changed, refreshing the extension list.');
+        void applyViewStyleContext();
         void provider.refresh(true);
       }
     }),
@@ -168,6 +198,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<Extens
     log,
     provider,
     treeView,
+    rich: richProvider,
     service: extensionService,
     dates: dateService,
     history: historyService,

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { SorterExtension } from '../models/extensionInfo';
+import { DEFAULT_GROUP_BY, GroupBy, isGroupBy } from '../models/richList';
 import {
   asRecord,
   getColorThemeCount,
@@ -19,6 +20,15 @@ import { InstallDateService } from './installDateService';
 import { DEFAULT_SORT_MODE, SortMode, isSortMode } from './sortService';
 
 export const CONFIGURATION_SECTION = 'extensionSorter';
+
+/** How the `Installed by Date` view is drawn. */
+export type ViewStyle = 'rich' | 'compact';
+export const VIEW_STYLES: readonly ViewStyle[] = ['rich', 'compact'];
+export const DEFAULT_VIEW_STYLE: ViewStyle = 'rich';
+
+export function isViewStyle(value: unknown): value is ViewStyle {
+  return typeof value === 'string' && (VIEW_STYLES as readonly string[]).includes(value);
+}
 
 /** How many extension folders are inspected at the same time. */
 const IO_CONCURRENCY = 12;
@@ -69,6 +79,18 @@ export class ExtensionService {
   defaultSortMode(): SortMode {
     const value = this.configuration.get<string>('defaultSortOrder', DEFAULT_SORT_MODE);
     return isSortMode(value) ? value : DEFAULT_SORT_MODE;
+  }
+
+  /** Look of the `Installed by Date` view: the hand drawn list or the tree. */
+  viewStyle(): ViewStyle {
+    const value = this.configuration.get<string>('viewStyle', DEFAULT_VIEW_STYLE);
+    return isViewStyle(value) ? value : DEFAULT_VIEW_STYLE;
+  }
+
+  /** Grouping of the rich list (ignored by the name sort orders). */
+  groupBy(): GroupBy {
+    const value = this.configuration.get<string>('groupBy', DEFAULT_GROUP_BY);
+    return isGroupBy(value) ? value : DEFAULT_GROUP_BY;
   }
 
   /** `<appRoot>/extensions`, or '' when VS Code does not tell us where it lives. */
