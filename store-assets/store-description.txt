@@ -1,0 +1,13 @@
+Extension Sorter
+================
+
+English
+-------
+
+Extension Sorter adds an "Installed by Date" view to VS Code: every installed extension in one plain list, sorted by when you actually installed it (newest or oldest first), with theme filtering, search, and one click to VS Code's native extension details page. Each date shows where it came from - recorded by VS Code, estimated from the extension folder, or first seen - so you always know how much to trust it. Built-in extensions are hidden by default, your sort order is remembered per profile, and everything runs offline: no telemetry, no network requests.
+
+
+简体中文
+--------
+
+Extension Sorter 在 VS Code 里加了一个「按安装日期」视图：已装扩展排成一列，按你当初安装的时间从新到旧（或从旧到新）排好，可以只看主题、按名称搜索，点一下就打开官方的扩展详情页。每个日期都标明来源——VS Code 记录的时间、按扩展文件夹估算的时间，还是首次见到的时间，能不能信一眼就知道。内置扩展默认隐藏，排序偏好按配置文件记住，全程离线运行，不收集任何数据。
