@@ -4,7 +4,7 @@
   <p>See your installed extensions in the order you actually installed them — and open the real details page in one click.</p>
   <p>
     <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version 1.0.0">
-    <img src="https://img.shields.io/badge/license-MIT-green" alt="License MIT">
+    <img src="https://img.shields.io/badge/license-Non--Commercial-red" alt="License Non-Commercial">
     <a href="https://marketplace.visualstudio.com/items?itemName=lilinhuang.extension-sorter"><img src="https://img.shields.io/badge/VS%20Code-Extension-1F6FEB?logo=visual-studio-code&amp;logoColor=white" alt="VS Code Extension"></a>
     <a href="https://github.com/vaxicy/extension-sorter"><img src="https://img.shields.io/badge/GitHub-Repository-181717?logo=github&amp;logoColor=white" alt="GitHub"></a>
   </p>
@@ -162,10 +162,11 @@ See [CHANGELOG.md](CHANGELOG.md). The first release, 1.0.0, is the complete feat
 
 ## 📄 License
 
-[MIT](LICENSE) © Li Lin Huang
+[Non-Commercial License](LICENSE) © vaxicy
 
-- ✅ Use it, modify it, publish it, use it commercially, use it privately
+- ✅ Use it, modify it and share it for personal, study, research and other non-commercial purposes
 - ✅ Keep the copyright notice and the license text with it
+- ❌ No commercial use without a separate license: selling it, shipping it inside a commercial product or using it for business operations is not allowed
 - ❌ The author provides no warranty and is not liable for any damage
 
-Commercial use is fine under MIT — no separate permission needed.
+Need it commercially? Ask the author for a commercial license.

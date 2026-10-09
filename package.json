@@ -4,7 +4,7 @@
   "description": "Sort installed extensions by install date, filter themes, and open the native extension details page in one click.",
   "version": "1.0.0",
   "publisher": "lilinhuang",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
     "url": "https://github.com/vaxicy/extension-sorter.git"

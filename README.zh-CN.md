@@ -4,7 +4,7 @@
   <p>按你当初安装的顺序看已装扩展，一键打开真正的扩展详情页。</p>
   <p>
     <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="版本 1.0.0">
-    <img src="https://img.shields.io/badge/license-MIT-green" alt="许可证 MIT">
+    <img src="https://img.shields.io/badge/license-Non--Commercial-red" alt="许可证 非商业使用">
     <a href="https://marketplace.visualstudio.com/items?itemName=lilinhuang.extension-sorter"><img src="https://img.shields.io/badge/VS%20Code-Extension-1F6FEB?logo=visual-studio-code&amp;logoColor=white" alt="VS Code 扩展"></a>
     <a href="https://github.com/vaxicy/extension-sorter"><img src="https://img.shields.io/badge/GitHub-Repository-181717?logo=github&amp;logoColor=white" alt="GitHub"></a>
   </p>
@@ -162,10 +162,11 @@ npm run vsix         # 打包 extension-sorter-<version>.vsix（并复制一份�
 
 ## 📄 许可证
 
-[MIT](LICENSE) © Li Lin Huang
+本项目使用 [非商业使用许可证 (Non-Commercial License)](LICENSE)，© vaxicy
 
-- ✅ 可以使用、修改、发布，可以商用，也可以私用
+- ✅ 个人使用、学习研究、非商业分发都可以
 - ✅ 分发时保留版权声明与许可证正文
+- ❌ 未经许可不得商用：出售、作为商业产品或服务的一部分、用于企业内部业务运营，都不允许
 - ❌ 作者不提供任何担保，也不为由此产生的问题负责
 
-MIT 本身允许商用，不需要再单独申请授权。
+需要商用请联系作者获取商业许可。

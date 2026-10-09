@@ -1,21 +1,77 @@
-MIT License
+非商业使用许可证 (Non-Commercial License)
 
-Copyright (c) 2026 Li Lin Huang
+版本 1.0，2026 年 7 月 24 日
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+版权所有 (c) 2026 vaxicy
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 许可授权
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+在遵守本许可条款的前提下，您被授予以下权利：
+
+1. **个人使用**：您可以为本人的非商业目的使用、安装和运行本软件。
+2. **学习研究**：您可以出于学习、研究、教育目的查看、分析、修改源代码。
+3. **非商业分发**：您可以以非商业目的复制和分发本软件的原始或修改版本，但必须：
+   - 保留所有版权声明和本许可声明
+   - 在分发时附上本许可证的完整副本
+   - 注明原作者和原始出处
+   - 任何修改版本必须使用与本软件相同的许可条款
+
+## 禁止事项
+
+未经版权所有者的明确书面许可，您不得：
+
+1. **商业使用**：将本软件或其任何部分用于商业目的，包括但不限于：
+   - 销售本软件或其副本
+   - 将本软件作为商业产品或服务的一部分
+   - 在商业环境中使用本软件进行内部业务运营
+   - 通过本软件直接或间接获取商业利益
+2. **转许可**：不得以任何不同于本许可的条款再许可本软件。
+3. **商标使用**：不得使用项目名称、商标或标识来推广修改后的版本。
+
+## 商业许可
+
+如果您需要商业使用本软件，请联系作者获取商业许可证。
+
+## 免责声明
+
+本软件按"原样"提供，不提供任何明示或暗示的担保，包括但不限于适销性、特定用途适用性和非侵权性的担保。在任何情况下，作者或版权所有者均不对因使用本软件而产生的任何索赔、损害或其他责任负责。
+
+---
+
+Non-Commercial License
+
+Version 1.0, July 24, 2026
+
+Copyright (c) 2026 vaxicy
+
+## Grant of License
+
+Subject to the terms of this license, you are granted the following rights:
+
+1. **Personal Use**: You may use, install, and run the Software for your personal, non-commercial purposes.
+2. **Education & Research**: You may view, analyze, and modify the source code for learning, research, and educational purposes.
+3. **Non-Commercial Distribution**: You may copy and distribute original or modified versions of the Software for non-commercial purposes, provided that:
+   - All copyright notices and this license notice are retained
+   - A complete copy of this license is included with the distribution
+   - The original author and source are credited
+   - Modified versions must be distributed under the same license terms
+
+## Prohibitions
+
+Without explicit written permission from the copyright holder, you may NOT:
+
+1. **Commercial Use**: Use the Software or any part of it for commercial purposes, including but not limited to:
+   - Selling the Software or its copies
+   - Incorporating the Software as part of a commercial product or service
+   - Using the Software for internal business operations in a commercial environment
+   - Deriving commercial benefit from the Software
+2. **Sublicensing**: Sublicense the Software under terms different from this license.
+3. **Trademark Use**: Use project names, trademarks, or logos to promote modified versions.
+
+## Commercial License
+
+For commercial use, please contact the author to obtain a commercial license.
+
+## Disclaimer of Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY.
