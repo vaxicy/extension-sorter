@@ -9,6 +9,9 @@ out/test/**
 tsconfig.json
 .codebuddy/**
 
+# ---- store assets stay in the repository, never in the package --------
+store-assets/**
+
 # ---- never ship local or sensitive data -------------------------------
 .gitignore
 .git/**

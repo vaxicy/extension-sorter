@@ -5,6 +5,14 @@
   "version": "1.0.0",
   "publisher": "lilinhuang",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaxicy/extension-sorter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vaxicy/extension-sorter/issues"
+  },
+  "homepage": "https://github.com/vaxicy/extension-sorter#readme",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -215,12 +223,13 @@
     "test:unit": "mocha \"out/test/unit/**/*.test.js\"",
     "test:integration": "node out/test/runIntegration.js",
     "test": "npm run lint && npm run test:unit",
-    "vsix": "vsce package"
+    "vsix": "node scripts/package.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.14.0",
     "@types/vscode": "1.80.0",
+    "@vscode/vsce": "^3.0.0",
     "mocha": "^10.4.0",
     "typescript": "^5.4.5"
   }
