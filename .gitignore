@@ -1,0 +1,8 @@
+node_modules/
+out/
+dist/
+*.vsix
+.vscode-test/
+.codebuddy/
+*.log
+.DS_Store

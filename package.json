@@ -1,0 +1,227 @@
+{
+  "name": "extension-sorter",
+  "displayName": "Extension Sorter",
+  "description": "Sort installed extensions by install date, filter themes, and open the native extension details page in one click.",
+  "version": "1.0.0",
+  "publisher": "lilinhuang",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "extensions",
+    "extension manager",
+    "sort",
+    "sort by date",
+    "install date",
+    "installed",
+    "themes",
+    "theme viewer",
+    "organize",
+    "history"
+  ],
+  "icon": "resources/icon.png",
+  "galleryBanner": {
+    "color": "#1F6FEB",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true,
+      "description": "Extension Sorter only reads the extensions that are already installed and never executes workspace code."
+    },
+    "virtualWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "extensionSorter",
+          "title": "Extension Sorter",
+          "icon": "resources/sorter.svg"
+        }
+      ]
+    },
+    "views": {
+      "extensionSorter": [
+        {
+          "id": "extensionSorter.installedByDate",
+          "name": "Installed by Date",
+          "icon": "resources/sorter.svg",
+          "contextualTitle": "Extension Sorter"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "extensionSorter.installedByDate",
+        "contents": "No installed extensions to show.\nEither there is no installed extension that matches the current search and filter, or every installed extension is hidden by the \"include built-in extensions\" setting.\n[Reset filters and search](command:extensionSorter.clearFilters)\n[Search extensions](command:extensionSorter.search)\n[Change sort order](command:extensionSorter.sort)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "extensionSorter.sort",
+        "title": "Sort Installed Extensions By...",
+        "category": "Extension Sorter",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "extensionSorter.filter",
+        "title": "Filter Installed Extensions...",
+        "category": "Extension Sorter",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "extensionSorter.search",
+        "title": "Search Installed Extensions...",
+        "category": "Extension Sorter",
+        "icon": "$(search)"
+      },
+      {
+        "command": "extensionSorter.refresh",
+        "title": "Refresh Installed Extensions",
+        "category": "Extension Sorter",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "extensionSorter.clearFilters",
+        "title": "Reset Filters and Search",
+        "category": "Extension Sorter",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "extensionSorter.openDetails",
+        "title": "Open Extension Details",
+        "category": "Extension Sorter",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "extensionSorter.copyId",
+        "title": "Copy Extension ID",
+        "category": "Extension Sorter",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "extensionSorter.openInMarketplace",
+        "title": "Open in Marketplace",
+        "category": "Extension Sorter",
+        "icon": "$(link-external)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "extensionSorter.sort",
+          "when": "view == extensionSorter.installedByDate",
+          "group": "navigation@1"
+        },
+        {
+          "command": "extensionSorter.filter",
+          "when": "view == extensionSorter.installedByDate",
+          "group": "navigation@2"
+        },
+        {
+          "command": "extensionSorter.search",
+          "when": "view == extensionSorter.installedByDate",
+          "group": "navigation@3"
+        },
+        {
+          "command": "extensionSorter.refresh",
+          "when": "view == extensionSorter.installedByDate",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "extensionSorter.openDetails",
+          "when": "view == extensionSorter.installedByDate && viewItem =~ /^extensionSorter\\./",
+          "group": "1_open@1"
+        },
+        {
+          "command": "extensionSorter.copyId",
+          "when": "view == extensionSorter.installedByDate && viewItem =~ /^extensionSorter\\./",
+          "group": "2_copy@1"
+        },
+        {
+          "command": "extensionSorter.openInMarketplace",
+          "when": "view == extensionSorter.installedByDate && viewItem =~ /^extensionSorter\\.(theme|extension)$/",
+          "group": "3_marketplace@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "extensionSorter.openDetails",
+          "when": "false"
+        },
+        {
+          "command": "extensionSorter.copyId",
+          "when": "false"
+        },
+        {
+          "command": "extensionSorter.openInMarketplace",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Extension Sorter",
+      "properties": {
+        "extensionSorter.includeBuiltInExtensions": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Show VS Code built-in extensions (the ones shipped inside the VS Code installation) in the **Installed by Date** view."
+        },
+        "extensionSorter.defaultSortOrder": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "oldest",
+            "nameAsc",
+            "nameDesc"
+          ],
+          "enumDescriptions": [
+            "Newest Installed First",
+            "Oldest Installed First",
+            "Name A-Z",
+            "Name Z-A"
+          ],
+          "default": "newest",
+          "markdownDescription": "Sort order used the first time the **Installed by Date** view is opened. Changing the order from the view title bar stores a per-profile preference that overrides this setting."
+        },
+        "extensionSorter.installHistoryRetentionDays": {
+          "type": "number",
+          "default": 180,
+          "minimum": 1,
+          "maximum": 3650,
+          "markdownDescription": "How long Extension Sorter keeps \"first seen\" records for extensions that are no longer installed. Records older than this are discarded."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "tsc -p ./ --noEmit",
+    "test:unit": "mocha \"out/test/unit/**/*.test.js\"",
+    "test:integration": "node out/test/runIntegration.js",
+    "test": "npm run lint && npm run test:unit",
+    "vsix": "vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.14.0",
+    "@types/vscode": "1.80.0",
+    "mocha": "^10.4.0",
+    "typescript": "^5.4.5"
+  }
+}

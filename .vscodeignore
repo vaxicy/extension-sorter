@@ -1,0 +1,20 @@
+# ---- development only -------------------------------------------------
+.vscode/**
+.vscode-test/**
+src/**
+scripts/**
+out/test/**
+**/*.ts
+**/*.map
+tsconfig.json
+.codebuddy/**
+
+# ---- never ship local or sensitive data -------------------------------
+.gitignore
+.git/**
+.editorconfig
+**/*.log
+**/.DS_Store
+
+# ---- dependencies are only needed at build time -----------------------
+node_modules/**
